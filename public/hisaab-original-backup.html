@@ -1,0 +1,83 @@
+<!doctype html>
+<html lang="hi">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#14532d">
+<title>हिसाब Calculator</title>
+<style>
+:root{font-family:system-ui,-apple-system,"Noto Sans Devanagari",sans-serif;color:#17221b;background:#f3f7f3}
+*{box-sizing:border-box}body{margin:0;padding:16px 14px 32px}
+header{max-width:650px;margin:0 auto 18px;background:#14532d;color:white;padding:20px;border-radius:20px}
+h1{font-size:25px;margin:0 0 5px}header p{margin:0;color:#d9f4df;font-size:14px}
+main{max-width:650px;margin:auto;display:grid;gap:15px}
+.card{background:white;border:1px solid #dce8dd;border-radius:18px;padding:17px;box-shadow:0 4px 16px #163b1b0c}
+h2{font-size:18px;margin:0 0 14px;color:#14532d}
+.field{display:grid;gap:6px;margin:12px 0}
+label{font-size:14px;font-weight:650}
+input{width:100%;padding:13px 12px;border:1px solid #cbd8cc;border-radius:11px;font:inherit;font-size:17px;background:#fff}
+input:focus{outline:2px solid #86c99a;border-color:#238344}
+.result{background:#e7f6e9;border:1px solid #b9e1c0;border-radius:13px;padding:13px;margin-top:13px}
+.result small{display:block;color:#28633a;font-weight:650;margin-bottom:4px}
+.answer{font-size:24px;font-weight:800;color:#14532d;overflow-wrap:anywhere}
+.sub{font-size:13px;color:#45614b;margin-top:3px}
+footer{max-width:650px;margin:18px auto 0;text-align:center;color:#637267;font-size:12px}
+button{border:0;background:#14532d;color:white;border-radius:11px;padding:10px 14px;font:inherit;font-weight:650;margin-top:8px}
+</style>
+</head>
+<body>
+<header>
+<h1>🧮 हिसाब Calculator</h1>
+<p>बिना इंटरनेट • मुफ्त • रुपये, किलो और ग्राम का हिसाब</p>
+</header>
+<main>
+<section class="card">
+<h2>1) रुपये से कितना सामान मिलेगा</h2>
+<div class="field"><label for="rate1">भाव (₹ प्रति किलो)</label><input id="rate1" type="number" min="0" step="any" value="55" inputmode="decimal"></div>
+<div class="field"><label for="money1">कितने रुपये का लेना है (₹)</label><input id="money1" type="number" min="0" step="any" value="100" inputmode="decimal"></div>
+<div class="result"><small>कुल वजन</small><div class="answer" id="weightOut">1 किलो 818 ग्राम</div><div class="sub" id="gramsOut">कुल 1818.18 ग्राम</div></div>
+</section>
+<section class="card">
+<h2>2) वजन से कुल कीमत</h2>
+<div class="field"><label for="rate2">भाव (₹ प्रति किलो)</label><input id="rate2" type="number" min="0" step="any" value="55" inputmode="decimal"></div>
+<div class="field"><label for="kg2">वजन — किलो</label><input id="kg2" type="number" min="0" step="any" value="0" inputmode="decimal"></div>
+<div class="field"><label for="g2">वजन — ग्राम</label><input id="g2" type="number" min="0" step="any" value="250" inputmode="decimal"></div>
+<div class="result"><small>कुल कीमत</small><div class="answer" id="priceOut">₹13.75</div></div>
+</section>
+<section class="card">
+<h2>3) रुपये और वजन से भाव प्रति किलो</h2>
+<div class="field"><label for="money3">कुल रुपये (₹)</label><input id="money3" type="number" min="0" step="any" value="100" inputmode="decimal"></div>
+<div class="field"><label for="kg3">वजन — किलो</label><input id="kg3" type="number" min="0" step="any" value="0" inputmode="decimal"></div>
+<div class="field"><label for="g3">वजन — ग्राम</label><input id="g3" type="number" min="0" step="any" value="250" inputmode="decimal"></div>
+<div class="result"><small>भाव प्रति किलो</small><div class="answer" id="rateOut">₹400.00 / किलो</div></div>
+</section>
+</main>
+<footer>आपका हिसाब आपके फोन पर ही रहता है। यह ऐप इंटरनेट या सर्वर का उपयोग नहीं करता।</footer>
+<script>
+const $ = id => document.getElementById(id);
+const num = id => {
+  const v = Number($(id).value);
+  return Number.isFinite(v) && v >= 0 ? v : 0;
+};
+const money = n => "₹" + n.toLocaleString("en-IN",{minimumFractionDigits:2,maximumFractionDigits:2});
+function calc(){
+  const rate1=num("rate1"), money1=num("money1");
+  if(rate1>0){
+    const grams=money1/rate1*1000, rounded=Math.round(grams);
+    const kg=Math.floor(rounded/1000), g=rounded%1000;
+    $("weightOut").textContent=`${kg} किलो ${g} ग्राम`;
+    $("gramsOut").textContent=`कुल ${grams.toLocaleString("en-IN",{maximumFractionDigits:2})} ग्राम`;
+  }else{
+    $("weightOut").textContent="भाव दर्ज करें";
+    $("gramsOut").textContent="";
+  }
+  const totalGrams=num("kg2")*1000+num("g2");
+  $("priceOut").textContent=money(num("rate2")*totalGrams/1000);
+  const grams3=num("kg3")*1000+num("g3");
+  $("rateOut").textContent=grams3>0?money(num("money3")/grams3*1000)+" / किलो":"वजन दर्ज करें";
+}
+document.querySelectorAll("input").forEach(el=>el.addEventListener("input",calc));
+calc();
+</script>
+</body>
+</html>

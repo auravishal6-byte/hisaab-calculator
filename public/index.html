@@ -1,0 +1,289 @@
+<!doctype html>
+<html lang="hi">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#14532d">
+<title>हिसाब Calculator</title>
+<style>
+:root{font-family:system-ui,-apple-system,"Noto Sans Devanagari",sans-serif;color:#17221b;background:#f3f7f3}
+*{box-sizing:border-box}body{margin:0;padding:16px 14px 32px}
+header{max-width:650px;margin:0 auto 18px;background:#14532d;color:white;padding:20px;border-radius:20px}
+h1{font-size:25px;margin:0 0 5px}header p{margin:0;color:#d9f4df;font-size:14px}
+main{max-width:650px;margin:auto;display:grid;gap:15px}
+.card{background:white;border:1px solid #dce8dd;border-radius:18px;padding:17px;box-shadow:0 4px 16px #163b1b0c}
+h2{font-size:18px;margin:0 0 14px;color:#14532d}
+.field{display:grid;gap:6px;margin:12px 0}
+label{font-size:14px;font-weight:650}
+input{width:100%;padding:13px 12px;border:1px solid #cbd8cc;border-radius:11px;font:inherit;font-size:17px;background:#fff}
+input:focus{outline:2px solid #86c99a;border-color:#238344}
+.result{background:#e7f6e9;border:1px solid #b9e1c0;border-radius:13px;padding:13px;margin-top:13px}
+.result small{display:block;color:#28633a;font-weight:650;margin-bottom:4px}
+.answer{font-size:24px;font-weight:800;color:#14532d;overflow-wrap:anywhere}
+.sub{font-size:13px;color:#45614b;margin-top:3px}
+footer{max-width:650px;margin:18px auto 0;text-align:center;color:#637267;font-size:12px}
+button{border:0;background:#14532d;color:white;border-radius:11px;padding:10px 14px;font:inherit;font-weight:650;margin-top:8px}
+</style>
+</head>
+<body><section class="card" id="authBox">
+  <h2>Account Login / Register</h2>
+
+  <div class="field">
+    <label>Email</label>
+    <input id="email" type="email" placeholder="Apna email likho">
+  </div>
+
+  <div class="field">
+    <label>Password</label>
+    <input id="password" type="password" placeholder="Password">
+  </div>
+
+  <button type="button" id="registerBtn">Register</button>
+  <button type="button" id="loginBtn">Login</button>
+  <button type="button" id="logoutBtn" hidden>Logout</button>
+
+  <p id="authMessage">Account banayein ya login karein.</p>
+  <p id="accountInfo"></p>
+</section>
+<header>
+<h1>🧮 हिसाब Calculator</h1>
+<p>बिना इंटरनेट • मुफ्त • रुपये, किलो और ग्राम का हिसाब</p>
+</header>
+<section class="card" id="premiumSection">
+  <h2>💎 Premium Advanced Calculator</h2>
+  <p id="premiumStatus">Premium features locked 🔒</p>
+
+  <div id="advancedTools">
+
+    <h3>1. Discount Calculator</h3>
+    <div class="field">
+      <label>Original Price (₹)</label>
+      <input id="originalPrice" type="number" min="0">
+    </div>
+    <div class="field">
+      <label>Discount (%)</label>
+      <input id="discountPercent" type="number" min="0" max="100">
+    </div>
+    <button type="button" onclick="calculateDiscount()">Calculate Discount</button>
+    <p id="discountResult"></p>
+
+    <hr>
+
+    <h3>2. Profit & Loss Calculator</h3>
+    <div class="field">
+      <label>Cost Price (₹)</label>
+      <input id="costPrice" type="number" min="0">
+    </div>
+    <div class="field">
+      <label>Selling Price (₹)</label>
+      <input id="sellingPrice" type="number" min="0">
+    </div>
+    <button type="button" onclick="calculateProfit()">Calculate Profit / Loss</button>
+    <p id="profitResult"></p>
+
+    <hr>
+
+    <h3>3. GST Calculator</h3>
+    <div class="field">
+      <label>Amount (₹)</label>
+      <input id="gstAmount" type="number" min="0">
+    </div>
+    <div class="field">
+      <label>GST Rate (%)</label>
+      <input id="gstRate" type="number" min="0">
+    </div>
+    <button type="button" onclick="calculateGST()">Calculate GST</button>
+    <p id="gstResult"></p>
+
+  </div>
+</section>
+</main>
+
+<main>
+<section class="card">
+<h2>1) रुपये से कितना सामान मिलेगा</h2>
+<div class="field"><label for="rate1">भाव (₹ प्रति किलो)</label><input id="rate1" type="number" min="0" step="any" value="55" inputmode="decimal"></div>
+<div class="field"><label for="money1">कितने रुपये का लेना है (₹)</label><input id="money1" type="number" min="0" step="any" value="100" inputmode="decimal"></div>
+<div class="result"><small>कुल वजन</small><div class="answer" id="weightOut">1 किलो 818 ग्राम</div><div class="sub" id="gramsOut">कुल 1818.18 ग्राम</div></div>
+</section>
+<section class="card">
+<h2>2) वजन से कुल कीमत</h2>
+<div class="field"><label for="rate2">भाव (₹ प्रति किलो)</label><input id="rate2" type="number" min="0" step="any" value="55" inputmode="decimal"></div>
+<div class="field"><label for="kg2">वजन — किलो</label><input id="kg2" type="number" min="0" step="any" value="0" inputmode="decimal"></div>
+<div class="field"><label for="g2">वजन — ग्राम</label><input id="g2" type="number" min="0" step="any" value="250" inputmode="decimal"></div>
+<div class="result"><small>कुल कीमत</small><div class="answer" id="priceOut">₹13.75</div></div>
+</section>
+<section class="card">
+<h2>3) रुपये और वजन से भाव प्रति किलो</h2>
+<div class="field"><label for="money3">कुल रुपये (₹)</label><input id="money3" type="number" min="0" step="any" value="100" inputmode="decimal"></div>
+<div class="field"><label for="kg3">वजन — किलो</label><input id="kg3" type="number" min="0" step="any" value="0" inputmode="decimal"></div>
+<div class="field"><label for="g3">वजन — ग्राम</label><input id="g3" type="number" min="0" step="any" value="250" inputmode="decimal"></div>
+<div class="result"><small>भाव प्रति किलो</small><div class="answer" id="rateOut">₹400.00 / किलो</div></div>
+</section>
+</main>
+<footer>आपका हिसाब आपके फोन पर ही रहता है। यह ऐप इंटरनेट या सर्वर का उपयोग नहीं करता।</footer>
+<script>
+const $ = id => document.getElementById(id);
+const num = id => {
+  const v = Number($(id).value);
+  return Number.isFinite(v) && v >= 0 ? v : 0;
+};
+const money = n => "₹" + n.toLocaleString("en-IN",{minimumFractionDigits:2,maximumFractionDigits:2});
+function calc(){
+  const rate1=num("rate1"), money1=num("money1");
+  if(rate1>0){
+    const grams=money1/rate1*1000, rounded=Math.round(grams);
+    const kg=Math.floor(rounded/1000), g=rounded%1000;
+    $("weightOut").textContent=`${kg} किलो ${g} ग्राम`;
+    $("gramsOut").textContent=`कुल ${grams.toLocaleString("en-IN",{maximumFractionDigits:2})} ग्राम`;
+  }else{
+    $("weightOut").textContent="भाव दर्ज करें";
+    $("gramsOut").textContent="";
+  }
+  const totalGrams=num("kg2")*1000+num("g2");
+  $("priceOut").textContent=money(num("rate2")*totalGrams/1000);
+  const grams3=num("kg3")*1000+num("g3");
+  $("rateOut").textContent=grams3>0?money(num("money3")/grams3*1000)+" / किलो":"वजन दर्ज करें";
+}
+calc();	
+
+document.querySelectorAll("input").forEach(el=>el.addEventListener("input",calc));
+calc();
+</script>
+
+<script>
+function calculateDiscount() {
+  const price = Number(document.getElementById("originalPrice").value);
+  const discount = Number(document.getElementById("discountPercent").value);
+  const result = document.getElementById("discountResult");
+
+  if (price <= 0 || discount < 0 || discount > 100) {
+    result.textContent = "Sahi price aur discount bharo.";
+    return;
+  }
+
+  const saved = price * discount / 100;
+  const finalPrice = price - saved;
+
+  result.textContent =
+    `Discount: ₹${saved.toFixed(2)} | Final Price: ₹${finalPrice.toFixed(2)}`;
+}
+
+function calculateProfit() {
+  const cost = Number(document.getElementById("costPrice").value);
+  const selling = Number(document.getElementById("sellingPrice").value);
+  const result = document.getElementById("profitResult");
+
+  if (cost <= 0 || selling < 0) {
+    result.textContent = "Sahi Cost Price aur Selling Price bharo.";
+    return;
+  }
+
+  const difference = selling - cost;
+  const percent = Math.abs(difference) / cost * 100;
+
+  if (difference > 0) {
+    result.textContent = `Profit: ₹${difference.toFixed(2)} (${percent.toFixed(2)}%)`;
+  } else if (difference < 0) {
+    result.textContent = `Loss: ₹${Math.abs(difference).toFixed(2)} (${percent.toFixed(2)}%)`;
+  } else {
+    result.textContent = "No Profit, No Loss.";
+  }
+}
+
+function calculateGST() {
+  const amount = Number(document.getElementById("gstAmount").value);
+  const rate = Number(document.getElementById("gstRate").value);
+  const result = document.getElementById("gstResult");
+
+  if (amount <= 0 || rate < 0) {
+    result.textContent = "Sahi amount aur GST rate bharo.";
+    return;
+  }
+
+  const gst = amount * rate / 100;
+  const total = amount + gst;
+
+  result.textContent =
+    `GST: ₹${gst.toFixed(2)} | Total Amount: ₹${total.toFixed(2)}`;
+}
+
+</script>
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.14.1/firebase-app.js";
+import {
+  getAuth,
+  createUserWithEmailAndPassword,
+  signInWithEmailAndPassword,
+  signOut,
+  onAuthStateChanged
+} from "https://www.gstatic.com/firebasejs/10.14.1/firebase-auth.js";
+
+const firebaseConfig = {
+  apiKey: "AIzaSyAOND4iv16_yeuZVRfbge2TKioajN9DjSc",
+  authDomain: "hisaabcalculator-2a5ff.firebaseapp.com",
+  databaseURL: "https://hisaabcalculator-2a5ff-default-rtdb.asia-southeast1.firebasedatabase.app",
+  projectId: "hisaabcalculator-2a5ff",
+  storageBucket: "hisaabcalculator-2a5ff.firebasestorage.app",
+  messagingSenderId: "890797991228",
+  appId: "1:890797991228:web:190a5b5b0dd56cd854ea39"
+};
+
+const app = initializeApp(firebaseConfig);
+const auth = getAuth(app);
+
+const email = document.getElementById("email");
+const password = document.getElementById("password");
+const message = document.getElementById("authMessage");
+const accountInfo = document.getElementById("accountInfo");
+const registerBtn = document.getElementById("registerBtn");
+const loginBtn = document.getElementById("loginBtn");
+const logoutBtn = document.getElementById("logoutBtn");
+
+registerBtn.onclick = async () => {
+  try {
+    const result = await createUserWithEmailAndPassword(
+      auth, email.value.trim(), password.value
+    );
+    message.textContent = "Account successfully ban gaya!";
+  } catch (error) {
+    message.textContent = error.message;
+  }
+};
+
+loginBtn.onclick = async () => {
+  try {
+    await signInWithEmailAndPassword(
+      auth, email.value.trim(), password.value
+    );
+    message.textContent = "Login successful!";
+  } catch (error) {
+    message.textContent = error.message;
+  }
+};
+
+logoutBtn.onclick = async () => {
+  try {
+    await signOut(auth);
+    message.textContent = "Logout successful!";
+  } catch (error) {
+    message.textContent = error.message;
+  }
+};
+
+onAuthStateChanged(auth, user => {
+  const loggedIn = !!user;
+  registerBtn.hidden = loggedIn;
+  loginBtn.hidden = loggedIn;
+  logoutBtn.hidden = !loggedIn;
+  email.hidden = loggedIn;
+  password.hidden = loggedIn;
+
+  accountInfo.textContent = user
+    ? "Logged in: " + user.email
+    : "Aap login nahi hain.";
+});
+</script>
+
+</body>
+</html>

@@ -1,0 +1,7 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="app_name">Hisaab Calculator</string>
+    <string name="title_activity_main">Hisaab Calculator</string>
+    <string name="package_name">com.hisaabcalculator.app</string>
+    <string name="custom_url_scheme">com.hisaabcalculator.app</string>
+</resources>
