@@ -24,6 +24,10 @@ input:focus{outline:2px solid #86c99a;border-color:#238344}
 footer{max-width:650px;margin:18px auto 0;text-align:center;color:#637267;font-size:12px}
 button{border:0;background:#14532d;color:white;border-radius:11px;padding:10px 14px;font:inherit;font-weight:650;margin-top:8px}
 button.lock{background:#7f1d1d}
+#soundCard p.sub{margin:-6px 0 0}
+#bgmBtn{background:#4b5563;margin-top:10px}
+#bgmBtn.on{background:#14532d}
+#bgmBtn:disabled{opacity:.65}
 </style>
 </head>
 <body><section class="card" id="authBox">
@@ -50,6 +54,12 @@ button.lock{background:#7f1d1d}
 <h1>🧮 हिसाब Calculator</h1>
 <p>बिना इंटरनेट • मुफ्त • रुपये, किलो और ग्राम का हिसाब</p>
 </header>
+<section class="card" id="soundCard">
+  <h2>🌿 Nature Sound</h2>
+  <p class="sub">Chidiya aur nadi ke paani ki halki awaaz. App khulte hi chalu; dabakar band/chalu kar sakte ho.</p>
+  <button type="button" id="bgmBtn" aria-label="Nature sound on/off">Sound ON 🔊</button>
+  <audio id="bgmAudio" src="nature.mp3" loop preload="auto"></audio>
+</section>
 <section class="card" id="premiumSection">
   <h2>💎 Premium Advanced Calculator</h2>
   <p id="premiumStatus">Premium features locked 🔒</p>
@@ -335,6 +345,63 @@ onAuthStateChanged(auth, user => {
 });
 </script>
 
+<script>
+// ===== Nature background sound (chidiya + nadi ka paani) =====
+// nature.mp3 file isi folder (public/) me honi chahiye. Sound CC0 / public domain hai.
+// App khulte hi sound chalu (default ON); button se band ki hui setting yaad rehti hai.
+// Android autoplay ke liye MainActivity.java me setMediaPlaybackRequiresUserGesture(false) zaroori hai.
+(function(){
+  var btn = document.getElementById("bgmBtn");
+  var bgm = document.getElementById("bgmAudio");
+  if(!btn || !bgm){ return; }
+  bgm.volume = 0.8;
+  var want = true;   // default ON; user ne band ki ho to "0" saved hota hai
+  try{ want = localStorage.getItem("hisaabBgmOn") !== "0"; }catch(e){}
+  var available = true;
+  function paint(){
+    if(!available){
+      btn.textContent = "Sound file nahi mili ⚠️";
+      btn.disabled = true;
+      return;
+    }
+    btn.textContent = bgm.paused ? "Sound OFF 🔇" : "Sound ON 🔊";
+    if(bgm.paused){ btn.classList.remove("on"); } else { btn.classList.add("on"); }
+  }
+  function save(){ try{ localStorage.setItem("hisaabBgmOn", want ? "1" : "0"); }catch(e){} }
+  function play(){
+    try{
+      var p = bgm.play();
+      if(p && p.catch){ p.catch(function(){ paint(); }); }
+    }catch(e){ paint(); }
+  }
+  btn.addEventListener("click", function(){
+    if(bgm.paused){ want = true; play(); }
+    else { want = false; bgm.pause(); }
+    save();
+  });
+  bgm.addEventListener("play", paint);
+  bgm.addEventListener("pause", paint);
+  bgm.addEventListener("error", function(){ available = false; want = false; paint(); });
+  document.addEventListener("visibilitychange", function(){
+    if(document.hidden){ bgm.pause(); }
+    else if(want){ play(); }
+  });
+  window.addEventListener("pagehide", function(){ bgm.pause(); });
+  // App khulne par apne aap chalu (native setting allow karti hai to)
+  if(want){
+    play();
+    // Agar autoplay block hua (jaise browser preview), to pehli touch par chalu
+    var kick = function(){
+      if(want && available && bgm.paused){ play(); }
+    };
+    document.addEventListener("touchstart", kick, {once:true});
+    document.addEventListener("click", kick, {once:true});
+  }
+  paint();
+})();
+</script>
+
 </body>
 </html>
+
 
