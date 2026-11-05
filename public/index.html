@@ -118,7 +118,7 @@ html.dark #splashScreen{background:radial-gradient(ellipse at 50% 38%,#163d27,#0
 <div class="settingRow"><label for="darkToggle">Dark mode</label><input type="checkbox" id="darkToggle" role="switch"></div>
 <section class="card" id="soundCard">
   <h2><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M6 18C6 9 12 4 20 4c0 8-5 14-14 14z"/><path d="M6 18c3-5 7-8 10-10"/></svg> Nature Sound</h2>
-  <p class="sub">Chidiya aur nadi ke paani ki halki awaaz. App khulte hi chalu; dabakar band/chalu kar sakte ho.</p>
+  <p class="sub">Chidiya aur nadi ke paani ki halki awaaz. Sirf homepage par chalegi; dabakar band/chalu kar sakte ho.</p>
   <button type="button" id="bgmBtn" aria-label="Nature sound on/off" class="on"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M11 5L6 9H3v6h3l5 4z" fill="currentColor" stroke="none"/><path class="wv" d="M15 9a4 4 0 010 6M18 7a7 7 0 010 10"/><line class="sl" x1="16" y1="9" x2="21" y2="15"/><line class="sl" x1="21" y1="9" x2="16" y2="15"/></svg><span id="bgmLabel">Sound ON</span></button>
   <audio id="bgmAudio" src="nature.mp3" loop preload="auto"></audio>
 </section>
@@ -467,58 +467,67 @@ onAuthStateChanged(auth, user => {
 </script>
 
 <script>
-// ===== Nature background sound (chidiya + nadi ka paani) =====
-// nature.mp3 file isi folder (public/) me honi chahiye. Sound CC0 / public domain hai.
-// App khulte hi sound chalu (default ON); button se band ki hui setting yaad rehti hai.
-// Android autoplay ke liye MainActivity.java me setMediaPlaybackRequiresUserGesture(false) zaroori hai.
+// ===== Nature background sound: homepage only =====
 (function(){
-  var btn = document.getElementById("bgmBtn");
-  var bgm = document.getElementById("bgmAudio");
-  if(!btn || !bgm){ return; }
-  bgm.volume = 0.8;
-  var want = true;   // default ON; user ne band ki ho to "0" saved hota hai
-  try{ want = localStorage.getItem("hisaabBgmOn") !== "0"; }catch(e){}
-  var available = true;
-  function paint(){
-    if(!available){
-      document.getElementById("bgmLabel").textContent = "Sound file nahi mili";
-      btn.disabled = true;
-      return;
-    }
-    document.getElementById("bgmLabel").textContent = bgm.paused ? "Sound OFF" : "Sound ON";
-    if(bgm.paused){ btn.classList.remove("on"); } else { btn.classList.add("on"); }
-  }
-  function save(){ try{ localStorage.setItem("hisaabBgmOn", want ? "1" : "0"); }catch(e){} }
-  function play(){
-    try{
-      var p = bgm.play();
-      if(p && p.catch){ p.catch(function(){ paint(); }); }
-    }catch(e){ paint(); }
-  }
-  btn.addEventListener("click", function(){
-    if(bgm.paused){ want = true; play(); }
-    else { want = false; bgm.pause(); }
-    save();
-  });
-  bgm.addEventListener("play", paint);
-  bgm.addEventListener("pause", paint);
-  bgm.addEventListener("error", function(){ available = false; want = false; paint(); });
-  document.addEventListener("visibilitychange", function(){
-    if(document.hidden){ bgm.pause(); }
-    else if(want){ play(); }
-  });
-  window.addEventListener("pagehide", function(){ bgm.pause(); });
-  // App khulne par apne aap chalu (native setting allow karti hai to)
-  if(want){
-    play();
-    // Agar autoplay block hua (jaise browser preview), to pehli touch par chalu
-    var kick = function(){
-      if(want && available && bgm.paused){ play(); }
-    };
-    document.addEventListener("touchstart", kick, {once:true});
-    document.addEventListener("click", kick, {once:true});
-  }
+ var btn=document.getElementById("bgmBtn"),bgm=document.getElementById("bgmAudio");
+ if(!btn||!bgm)return;
+ bgm.volume=0.8;
+ var want=true,available=true;
+ try{want=localStorage.getItem("hisaabBgmOn")!=="0";}catch(e){}
+ function home(){return !document.getElementById("menuView").hidden&&!document.hidden;}
+ function paint(){
+  document.getElementById("bgmLabel").textContent=!available?"Sound file nahi mili":want?(home()?"Sound ON":"Sound ON (sirf homepage)"):"Sound OFF";
+  btn.disabled=!available;btn.classList.toggle("on",want&&available);
+ }
+ function sync(){
+  if(want&&available&&home()){
+   try{var p=bgm.play();if(p&&p.catch)p.catch(function(){paint();});}catch(e){}
+  }else{bgm.pause();}
   paint();
+ }
+ btn.addEventListener("click",function(){want=!want;try{localStorage.setItem("hisaabBgmOn",want?"1":"0");}catch(e){}sync();});
+ bgm.addEventListener("error",function(){available=false;bgm.pause();paint();});
+ // A view change never changes the user's saved ON/OFF choice.
+ document.addEventListener("hisaab:viewchange",sync);
+ document.addEventListener("visibilitychange",sync);
+ window.addEventListener("pagehide",function(){bgm.pause();});
+ window.addEventListener("pageshow",sync);
+ document.addEventListener("touchstart",sync,{once:true});
+ document.addEventListener("click",sync,{once:true});
+ sync();
+})();
+</script>
+
+<script>
+// Original synthesized effects: soft UI click, bright X, lower rounded O.
+(function(){
+ var ctx=null;
+ function context(){
+  var Audio=window.AudioContext||window.webkitAudioContext;if(!Audio)return null;
+  if(!ctx)ctx=new Audio();if(ctx.state==="suspended")ctx.resume().catch(function(){});return ctx;
+ }
+ function tone(c,hz,start,length,volume,type,endHz){
+  var o=c.createOscillator(),g=c.createGain();o.type=type||"sine";
+  o.frequency.setValueAtTime(hz,start);if(endHz)o.frequency.exponentialRampToValueAtTime(endHz,start+length);
+  g.gain.setValueAtTime(0.0001,start);g.gain.exponentialRampToValueAtTime(volume,start+0.008);
+  g.gain.exponentialRampToValueAtTime(0.0001,start+length);
+  o.connect(g);g.connect(c.destination);o.start(start);o.stop(start+length+0.015);
+  o.onended=function(){o.disconnect();g.disconnect();};
+ }
+ window.hisaabEffect=function(kind){
+  if(document.hidden)return;
+  try{var c=context();if(!c)return;var t=c.currentTime;
+   if(kind==="X"){tone(c,660,t,0.12,0.13,"sine",880);tone(c,1320,t+0.045,0.13,0.055,"sine");}
+   else if(kind==="O"){tone(c,392,t,0.17,0.15,"sine",294);tone(c,588,t+0.025,0.16,0.065,"sine",440);}
+   else{tone(c,1100,t,0.045,0.055,"sine",760);}
+  }catch(e){} // Unsupported/muted audio must never break controls.
+ };
+ document.addEventListener("click",function(e){
+  var b=e.target.closest("button");if(!b||b.disabled||b.classList.contains("gameCell"))return;
+  window.hisaabEffect("click");
+ },true);
+ document.addEventListener("change",function(e){if(e.target.id==="darkToggle")window.hisaabEffect("click");});
+ document.addEventListener("visibilitychange",function(){if(document.hidden&&ctx&&ctx.state==="running")ctx.suspend().catch(function(){});});
 })();
 </script>
 
@@ -546,10 +555,12 @@ onAuthStateChanged(auth, user => {
     if(name === "menu"){
       menuView.hidden = false;
       appView.hidden = true;
+      document.dispatchEvent(new Event("hisaab:viewchange"));
       return;
     }
     menuView.hidden = true;
     appView.hidden = false;
+    document.dispatchEvent(new Event("hisaab:viewchange"));
     viewTitle.textContent = titles[name] || "";
     appView.querySelector("header").hidden = (name === "game");
     for(var k in secs){ if(secs[k]){ secs[k].hidden = (k !== name); } }
@@ -618,10 +629,11 @@ function setMode(next){mode=next;document.getElementById("modeBot").setAttribute
 cells.forEach(function(cell,i){cell.addEventListener("click",function(){
  if(done||pending||board[i]){return;}
  board[i]=turn;
+ if(window.hisaabEffect)window.hisaabEffect(turn);
  if(outcome(board)){done=true;paint();return;}
  if(mode==="friend"){turn=turn==="X"?"O":"X";paint();return;}
  pending=true;paint();var token=revision;
- setTimeout(function(){if(token!==revision){return;}var move=botMove(board.slice());if(move>=0){board[move]="O";}pending=false;turn="X";paint();},350);
+ setTimeout(function(){if(token!==revision){return;}var move=botMove(board.slice());if(move>=0){board[move]="O";if(!document.getElementById("gameSection").hidden&&!document.getElementById("appView").hidden&&window.hisaabEffect)window.hisaabEffect("O");}pending=false;turn="X";paint();},350);
 });});
 document.getElementById("modeBot").addEventListener("click",function(){setMode("bot");});
 document.getElementById("modeFriend").addEventListener("click",function(){setMode("friend");});
