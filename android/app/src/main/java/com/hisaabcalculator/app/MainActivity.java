@@ -20,7 +20,8 @@ public class MainActivity extends BridgeActivity {
         }
         // Reuse the existing Menu button, preserving all calculator values.
         getBridge().getWebView().evaluateJavascript(
-          "(function(){var app=document.getElementById('appView');"
+          "(function(){if(window.hisaabCloseSettings && window.hisaabCloseSettings()){return true;}"
+          + "var app=document.getElementById('appView');"
           + "var back=document.getElementById('backBtn');"
           + "if(app && !app.hidden && back){back.click();return true;}"
           + "return false;})()",
