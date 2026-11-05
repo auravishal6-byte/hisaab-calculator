@@ -7,7 +7,7 @@
 <title>हिसाब Calculator</title>
 <style>
 :root{font-family:system-ui,-apple-system,"Noto Sans Devanagari",sans-serif;color:#17221b;background:#f3f7f3}
-*{box-sizing:border-box}body{margin:0;padding:16px 14px 32px}
+*{box-sizing:border-box}body{margin:0;padding:0}
 header{max-width:650px;margin:0 auto 18px;background:#14532d;color:white;padding:20px;border-radius:20px}
 h1{font-size:25px;margin:0 0 5px}header p{margin:0;color:#d9f4df;font-size:14px}
 main{max-width:650px;margin:auto;display:grid;gap:15px}
@@ -25,12 +25,53 @@ footer{max-width:650px;margin:18px auto 0;text-align:center;color:#637267;font-s
 button{border:0;background:#14532d;color:white;border-radius:11px;padding:10px 14px;font:inherit;font-weight:650;margin-top:8px}
 button.lock{background:#7f1d1d}
 #soundCard p.sub{margin:-6px 0 0}
-#bgmBtn{background:#4b5563;margin-top:10px}
+#bgmBtn{background:#4b5563;margin-top:10px;display:inline-flex;align-items:center;gap:8px}
 #bgmBtn.on{background:#14532d}
 #bgmBtn:disabled{opacity:.65}
+#appView{padding:16px 14px 32px}
+#menuView{min-height:100vh;box-sizing:border-box;padding:26px 16px 24px;background:linear-gradient(165deg,#052e16 0%,#14532d 55%,#1d6a3f 100%)}
+.menuHero{position:relative;text-align:center;color:#fff;padding:58px 8px 4px;max-width:650px;margin:0 auto}
+.menuHero h1{font-size:28px;margin:8px 0 4px;color:#fff}
+.menuHero p{margin:0;color:#cdeed6;font-size:14px}
+#menuPremiumBtn{position:absolute;top:8px;right:0;background:linear-gradient(145deg,#fcd34d,#f59e0b);color:#422006;border:0;border-radius:999px;font-size:14px;font-weight:800;padding:9px 14px;margin:0;box-shadow:0 4px 10px rgba(0,0,0,.3);display:flex;align-items:center;gap:6px}
+#menuPremiumBtn .ic{width:16px;height:16px}
+.ic{width:20px;height:20px;vertical-align:-4px}
+.menuHero h1 .ic{width:26px;height:26px;vertical-align:-4px}
+.card h2 .ic{width:18px;height:18px;vertical-align:-3px}
+.menuBtn .mi .ic{width:24px;height:24px;vertical-align:middle}
+.menuBtn .mi.rupee{font-size:24px;font-weight:800;font-style:normal}
+.madeby{display:inline-block;margin-top:10px;padding:6px 20px;border:1.5px solid rgba(252,211,77,.75);border-radius:999px;color:#fcd34d;font-weight:800;font-size:14px;letter-spacing:3px;text-transform:uppercase;background:rgba(0,0,0,.18);box-shadow:0 2px 8px rgba(0,0,0,.2)}
+#bgmBtn .sl{display:block}
+#bgmBtn .wv{display:none}
+#bgmBtn.on .sl{display:none}
+#bgmBtn.on .wv{display:block}
+.menuButtons{display:grid;gap:14px;margin:24px auto 20px;max-width:650px}
+.menuBtn{display:flex;align-items:center;gap:12px;width:100%;border:0;border-radius:18px;padding:18px 16px;font:inherit;font-size:17px;font-weight:700;color:#fff;text-align:left;margin:0;box-shadow:0 6px 14px rgba(0,0,0,.25)}
+.menuBtn .mi{font-size:24px}
+.menuBtn.m1{background:linear-gradient(135deg,#16a34a,#15803d)}
+.menuBtn.m2{background:linear-gradient(135deg,#0e7490,#155e75)}
+.menuBtn.m3{background:linear-gradient(135deg,#d97706,#b45309)}
+#menuView .card{max-width:650px;margin:0 auto 15px}
+#menuView footer{color:#bfe6c9}
+.topBar{display:flex;align-items:center;gap:10px;max-width:650px;margin:0 auto 12px}
+#backBtn{background:#e7f6e9;color:#14532d;margin-top:0}
+#viewTitle{font-weight:700;color:#14532d;font-size:16px}
 </style>
 </head>
-<body><section class="card" id="authBox">
+<body>
+<div id="menuView">
+<div class="menuHero">
+<button type="button" id="menuPremiumBtn" aria-label="Premium key kholo" title="Premium"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"><path d="M6 3h12l4 6-10 12L2 9z"/><path d="M2 9h20"/></svg><span>Premium</span></button>
+<h1><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="5" y="2" width="14" height="20" rx="2"/><line x1="9" y1="6" x2="15" y2="6"/><line x1="9" y1="11" x2="9" y2="11.01"/><line x1="12" y1="11" x2="12" y2="11.01"/><line x1="15" y1="11" x2="15" y2="11.01"/><line x1="9" y1="15" x2="9" y2="15.01"/><line x1="12" y1="15" x2="12" y2="15.01"/><line x1="15" y1="15" x2="15" y2="18"/></svg> हिसाब Calculator</h1>
+<p>बिना इंटरनेट • मुफ्त • रुपये, किलो और ग्राम का हिसाब</p>
+<div class="madeby">Made by Vishal</div>
+</div>
+<div class="menuButtons">
+<button type="button" class="menuBtn m1" data-view="calc1"><span class="mi"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="5" y="8" width="14" height="12" rx="2"/><path d="M9 8V6a3 3 0 016 0v2"/></svg></span> रुपये से कितना सामान मिलेगा</button>
+<button type="button" class="menuBtn m2" data-view="calc2"><span class="mi"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"><line x1="12" y1="4" x2="12" y2="18"/><line x1="5" y1="7" x2="19" y2="7"/><path d="M5 7l-2.5 5h5z"/><path d="M19 7l-2.5 5h5z"/><line x1="8" y1="20" x2="16" y2="20"/></svg></span> वजन से कुल कीमत</button>
+<button type="button" class="menuBtn m3" data-view="calc3"><span class="mi rupee">₹</span> रुपये और वजन से भाव प्रति किलो</button>
+</div>
+<section class="card" id="authBox">
   <h2>Account Login / Register</h2>
 
   <div class="field">
@@ -50,19 +91,24 @@ button.lock{background:#7f1d1d}
   <p id="authMessage">Account banayein ya login karein.</p>
   <p id="accountInfo"></p>
 </section>
-<header>
-<h1>🧮 हिसाब Calculator</h1>
-<p>बिना इंटरनेट • मुफ्त • रुपये, किलो और ग्राम का हिसाब</p>
-</header>
+
 <section class="card" id="soundCard">
-  <h2>🌿 Nature Sound</h2>
+  <h2><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M6 18C6 9 12 4 20 4c0 8-5 14-14 14z"/><path d="M6 18c3-5 7-8 10-10"/></svg> Nature Sound</h2>
   <p class="sub">Chidiya aur nadi ke paani ki halki awaaz. App khulte hi chalu; dabakar band/chalu kar sakte ho.</p>
-  <button type="button" id="bgmBtn" aria-label="Nature sound on/off">Sound ON 🔊</button>
+  <button type="button" id="bgmBtn" aria-label="Nature sound on/off" class="on"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M11 5L6 9H3v6h3l5 4z" fill="currentColor" stroke="none"/><path class="wv" d="M15 9a4 4 0 010 6M18 7a7 7 0 010 10"/><line class="sl" x1="16" y1="9" x2="21" y2="15"/><line class="sl" x1="21" y1="9" x2="16" y2="15"/></svg><span id="bgmLabel">Sound ON</span></button>
   <audio id="bgmAudio" src="nature.mp3" loop preload="auto"></audio>
 </section>
+<footer>आपका हिसाब आपके फोन पर ही रहता है। यह ऐप इंटरनेट या सर्वर का उपयोग नहीं करता।</footer>
+</div>
+<div id="appView" hidden>
+<div class="topBar"><button type="button" id="backBtn">← Menu</button><span id="viewTitle"></span></div>
+<header>
+<h1><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="5" y="2" width="14" height="20" rx="2"/><line x1="9" y1="6" x2="15" y2="6"/><line x1="9" y1="11" x2="9" y2="11.01"/><line x1="12" y1="11" x2="12" y2="11.01"/><line x1="15" y1="11" x2="15" y2="11.01"/><line x1="9" y1="15" x2="9" y2="15.01"/><line x1="12" y1="15" x2="12" y2="15.01"/><line x1="15" y1="15" x2="15" y2="18"/></svg> हिसाब Calculator</h1>
+<p>बिना इंटरनेट • मुफ्त • रुपये, किलो और ग्राम का हिसाब</p>
+</header>
 <section class="card" id="premiumSection">
-  <h2>💎 Premium Advanced Calculator</h2>
-  <p id="premiumStatus">Premium features locked 🔒</p>
+  <h2><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"><path d="M6 3h12l4 6-10 12L2 9z"/><path d="M2 9h20"/></svg> Premium Advanced Calculator</h2>
+  <p id="premiumStatus">Premium features locked</p>
 
   <div id="keyBox">
     <div class="field">
@@ -117,27 +163,27 @@ button.lock{background:#7f1d1d}
 
     <hr>
 
-    <button type="button" id="lockBtn" class="lock">Lock Premium 🔒</button>
+    <button type="button" id="lockBtn" class="lock">Lock Premium</button>
 
   </div>
 </section>
 </main>
 
 <main>
-<section class="card">
+<section class="card" id="sec1">
 <h2>1) रुपये से कितना सामान मिलेगा</h2>
 <div class="field"><label for="rate1">भाव (₹ प्रति किलो)</label><input id="rate1" type="number" min="0" step="any" value="55" inputmode="decimal"></div>
 <div class="field"><label for="money1">कितने रुपये का लेना है (₹)</label><input id="money1" type="number" min="0" step="any" value="100" inputmode="decimal"></div>
 <div class="result"><small>कुल वजन</small><div class="answer" id="weightOut">1 किलो 818 ग्राम</div><div class="sub" id="gramsOut">कुल 1818.18 ग्राम</div></div>
 </section>
-<section class="card">
+<section class="card" id="sec2">
 <h2>2) वजन से कुल कीमत</h2>
 <div class="field"><label for="rate2">भाव (₹ प्रति किलो)</label><input id="rate2" type="number" min="0" step="any" value="55" inputmode="decimal"></div>
 <div class="field"><label for="kg2">वजन — किलो</label><input id="kg2" type="number" min="0" step="any" value="0" inputmode="decimal"></div>
 <div class="field"><label for="g2">वजन — ग्राम</label><input id="g2" type="number" min="0" step="any" value="250" inputmode="decimal"></div>
 <div class="result"><small>कुल कीमत</small><div class="answer" id="priceOut">₹13.75</div></div>
 </section>
-<section class="card">
+<section class="card" id="sec3">
 <h2>3) रुपये और वजन से भाव प्रति किलो</h2>
 <div class="field"><label for="money3">कुल रुपये (₹)</label><input id="money3" type="number" min="0" step="any" value="100" inputmode="decimal"></div>
 <div class="field"><label for="kg3">वजन — किलो</label><input id="kg3" type="number" min="0" step="any" value="0" inputmode="decimal"></div>
@@ -145,7 +191,7 @@ button.lock{background:#7f1d1d}
 <div class="result"><small>भाव प्रति किलो</small><div class="answer" id="rateOut">₹400.00 / किलो</div></div>
 </section>
 </main>
-<footer>आपका हिसाब आपके फोन पर ही रहता है। यह ऐप इंटरनेट या सर्वर का उपयोग नहीं करता।</footer>
+</div>
 <script>
 const $ = id => document.getElementById(id);
 const num = id => {
@@ -247,7 +293,7 @@ try{return localStorage.getItem("hisaabPremiumUnlocked")==="1";}catch(e){return 
 function setPremium(unlocked){
 document.getElementById("advancedTools").hidden = !unlocked;
 document.getElementById("keyBox").hidden = unlocked;
-document.getElementById("premiumStatus").textContent = unlocked ? "Premium unlocked ✅" : "Premium features locked 🔒";
+document.getElementById("premiumStatus").textContent = unlocked ? "Premium unlocked" : "Premium features locked";
 }
 document.getElementById("unlockBtn").onclick = function(){
 const box = document.getElementById("keyInput");
@@ -360,11 +406,11 @@ onAuthStateChanged(auth, user => {
   var available = true;
   function paint(){
     if(!available){
-      btn.textContent = "Sound file nahi mili ⚠️";
+      document.getElementById("bgmLabel").textContent = "Sound file nahi mili";
       btn.disabled = true;
       return;
     }
-    btn.textContent = bgm.paused ? "Sound OFF 🔇" : "Sound ON 🔊";
+    document.getElementById("bgmLabel").textContent = bgm.paused ? "Sound OFF" : "Sound ON";
     if(bgm.paused){ btn.classList.remove("on"); } else { btn.classList.add("on"); }
   }
   function save(){ try{ localStorage.setItem("hisaabBgmOn", want ? "1" : "0"); }catch(e){} }
@@ -401,7 +447,46 @@ onAuthStateChanged(auth, user => {
 })();
 </script>
 
+<script>
+// ===== Menu view (3 calculators + premium corner) =====
+(function(){
+  var menuView = document.getElementById("menuView");
+  var appView = document.getElementById("appView");
+  var viewTitle = document.getElementById("viewTitle");
+  var secs = {
+    premium: document.getElementById("premiumSection"),
+    calc1: document.getElementById("sec1"),
+    calc2: document.getElementById("sec2"),
+    calc3: document.getElementById("sec3")
+  };
+  var titles = {
+    premium: "Premium Advanced Calculator",
+    calc1: "रुपये से कितना सामान मिलेगा",
+    calc2: "वजन से कुल कीमत",
+    calc3: "रुपये और वजन से भाव प्रति किलो"
+  };
+  function show(name){
+    if(name === "menu"){
+      menuView.hidden = false;
+      appView.hidden = true;
+      return;
+    }
+    menuView.hidden = true;
+    appView.hidden = false;
+    viewTitle.textContent = titles[name] || "";
+    for(var k in secs){ if(secs[k]){ secs[k].hidden = (k !== name); } }
+    window.scrollTo(0, 0);
+  }
+  document.querySelectorAll(".menuBtn[data-view]").forEach(function(b){
+    b.addEventListener("click", function(){ show(b.dataset.view); });
+  });
+  document.getElementById("menuPremiumBtn").addEventListener("click", function(){ show("premium"); });
+  document.getElementById("backBtn").addEventListener("click", function(){ show("menu"); });
+})();
+</script>
+
 </body>
 </html>
+
 
 
