@@ -87,6 +87,22 @@ html.dark #backBtn,html.dark #settingsBtn{background:#244731;color:#c5f4d1}
 html.dark header{background:#183e28}
 html.dark #splashScreen{background:radial-gradient(ellipse at 50% 38%,#163d27,#07130d 76%)}
 
+
+#gameLaunch{width:100%;padding:16px;text-align:left;background:linear-gradient(120deg,#24347c,#6635a4);border:1px solid #a9a5ff;color:#fff;margin-top:14px;font-size:16px;min-height:54px}
+#gameSection{max-width:650px;margin:0 auto;background:radial-gradient(ellipse at top,#202452,#100d28 75%);color:#eef6ff;border:1px solid #5956a0;padding:22px 16px;border-radius:20px;box-shadow:0 8px 28px #0003}
+#gameSection h2{text-align:center;color:#dcf4ff;font-size:24px;text-shadow:0 0 14px #65bdff88;line-height:1.3}
+.gameModes{display:flex;gap:10px;margin:18px 0}.gameModes button{flex:1;background:#222744;color:#d8e1ff;border:1px solid #757ca8;margin:0;min-height:48px;font-size:14px;padding:10px 8px}
+.gameModes button[aria-pressed="true"]{background:#354884;border-color:#9be9ff;color:#fff;box-shadow:0 0 12px #63cfff33}
+#gameModeNote{text-align:center;color:#c4d1ea;font-size:13px;line-height:1.5;min-height:39px}
+#gameStatus{font-size:18px;font-weight:750;text-align:center;margin:18px 0;color:#eff8ff;min-height:28px}
+.gameBoard{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:9px;width:100%;max-width:330px;margin:0 auto}
+.gameCell{aspect-ratio:1;min-width:0;padding:0;margin:0;border-radius:13px;border:1px solid #677ba9;background:#192344;font-size:clamp(32px,12vw,58px);line-height:1;color:#e0eaff;display:flex;align-items:center;justify-content:center;touch-action:manipulation}
+.gameCell.x{color:#8fefff;text-shadow:0 0 14px #36bdff}
+.gameCell.o{color:#f1b2ff;text-shadow:0 0 14px #b94dff}
+.gameCell.win{background:#30466c;border:2px solid #b3f5ff;box-shadow:0 0 15px #4ad4ff66}
+.gameCell:focus-visible{outline:3px solid #fff;outline-offset:2px}
+#gameReset{display:block;margin:22px auto 0;background:#4053a3;border:1px solid #a6b4ff;color:#fff;min-height:46px;padding:11px 30px}
+
 </style>
 <script>try{if(localStorage.getItem("hisaabDarkMode")==="1"){document.documentElement.classList.add("dark");}}catch(e){}</script>
 </head>
@@ -106,6 +122,7 @@ html.dark #splashScreen{background:radial-gradient(ellipse at 50% 38%,#163d27,#0
   <button type="button" id="bgmBtn" aria-label="Nature sound on/off" class="on"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M11 5L6 9H3v6h3l5 4z" fill="currentColor" stroke="none"/><path class="wv" d="M15 9a4 4 0 010 6M18 7a7 7 0 010 10"/><line class="sl" x1="16" y1="9" x2="21" y2="15"/><line class="sl" x1="21" y1="9" x2="16" y2="15"/></svg><span id="bgmLabel">Sound ON</span></button>
   <audio id="bgmAudio" src="nature.mp3" loop preload="auto"></audio>
 </section>
+<button type="button" id="gameLaunch">Tic Tac Vishal Game <span aria-hidden="true">→</span></button>
 </aside></div>
 
 <div id="menuView">
@@ -146,6 +163,20 @@ html.dark #splashScreen{background:radial-gradient(ellipse at 50% 38%,#163d27,#0
 </div>
 <div id="appView" hidden>
 <div class="topBar"><button type="button" id="backBtn">← Menu</button><span id="viewTitle"></span></div>
+<section id="gameSection" hidden aria-label="Tic Tac Vishal Game">
+<h2>Tic Tac Vishal Game</h2>
+<div class="gameModes" role="group" aria-label="Game mode">
+<button type="button" id="modeBot" aria-pressed="true">Bot ke saath</button>
+<button type="button" id="modeFriend" aria-pressed="false">Friend ke saath</button>
+</div>
+<p id="gameModeNote">Aap X hain. Bot O hai.</p>
+<p id="gameStatus" tabindex="-1" aria-live="polite">Aapki baari (X)</p>
+<div class="gameBoard" role="group" aria-label="Tic tac toe board">
+<button type="button" class="gameCell" data-cell="0" aria-label="Khali cell 1"></button><button type="button" class="gameCell" data-cell="1" aria-label="Khali cell 2"></button><button type="button" class="gameCell" data-cell="2" aria-label="Khali cell 3"></button><button type="button" class="gameCell" data-cell="3" aria-label="Khali cell 4"></button><button type="button" class="gameCell" data-cell="4" aria-label="Khali cell 5"></button><button type="button" class="gameCell" data-cell="5" aria-label="Khali cell 6"></button><button type="button" class="gameCell" data-cell="6" aria-label="Khali cell 7"></button><button type="button" class="gameCell" data-cell="7" aria-label="Khali cell 8"></button><button type="button" class="gameCell" data-cell="8" aria-label="Khali cell 9"></button>
+</div>
+<button type="button" id="gameReset">Naya game</button>
+</section>
+
 <header>
 <h1><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="5" y="2" width="14" height="20" rx="2"/><line x1="9" y1="6" x2="15" y2="6"/><line x1="9" y1="11" x2="9" y2="11.01"/><line x1="12" y1="11" x2="12" y2="11.01"/><line x1="15" y1="11" x2="15" y2="11.01"/><line x1="9" y1="15" x2="9" y2="15.01"/><line x1="12" y1="15" x2="12" y2="15.01"/><line x1="15" y1="15" x2="15" y2="18"/></svg> हिसाब Calculator</h1>
 <p>बिना इंटरनेट • मुफ्त • रुपये, किलो और ग्राम का हिसाब</p>
@@ -498,12 +529,14 @@ onAuthStateChanged(auth, user => {
   var appView = document.getElementById("appView");
   var viewTitle = document.getElementById("viewTitle");
   var secs = {
+    game: document.getElementById("gameSection"),
     premium: document.getElementById("premiumSection"),
     calc1: document.getElementById("sec1"),
     calc2: document.getElementById("sec2"),
     calc3: document.getElementById("sec3")
   };
   var titles = {
+    game: "Tic Tac Vishal Game",
     premium: "Premium Advanced Calculator",
     calc1: "रुपये से कितना सामान मिलेगा",
     calc2: "वजन से कुल कीमत",
@@ -518,6 +551,7 @@ onAuthStateChanged(auth, user => {
     menuView.hidden = true;
     appView.hidden = false;
     viewTitle.textContent = titles[name] || "";
+    appView.querySelector("header").hidden = (name === "game");
     for(var k in secs){ if(secs[k]){ secs[k].hidden = (k !== name); } }
     window.scrollTo(0, 0);
   }
@@ -526,6 +560,11 @@ onAuthStateChanged(auth, user => {
   });
   document.getElementById("menuPremiumBtn").addEventListener("click", function(){ show("premium"); });
   document.getElementById("backBtn").addEventListener("click", function(){ show("menu"); });
+  document.getElementById("gameLaunch").addEventListener("click", function(){
+    if(window.hisaabCloseSettings){window.hisaabCloseSettings();}
+    show("game");
+    document.getElementById("gameStatus").focus();
+  });
 })();
 </script>
 
@@ -554,6 +593,40 @@ onAuthStateChanged(auth, user => {
  // Native Back calls this first so an open drawer closes before navigation.
  window.hisaabCloseSettings=function(){if(!overlay.hidden){close();return true;}return false;};
  setTimeout(function(){document.getElementById("splashScreen").hidden=true;},1600);
+})();
+</script>
+
+
+<script>
+(function(){
+const lines=[[0,1,2],[3,4,5],[6,7,8],[0,3,6],[1,4,7],[2,5,8],[0,4,8],[2,4,6]];
+function outcome(board){for(const l of lines){if(board[l[0]]&&l.every(i=>board[i]===board[l[0]]))return {winner:board[l[0]],line:l};}return board.every(Boolean)?{winner:'draw',line:[]}:null;}
+function rank(board,side,depth=0){const r=outcome(board);if(r)return r.winner==='O'?10-depth:r.winner==='X'?depth-10:0;const scores=[];for(let i=0;i<9;i++){if(!board[i]){board[i]=side;scores.push(rank(board,side==='O'?'X':'O',depth+1));board[i]=null;}}return side==='O'?Math.max(...scores):Math.min(...scores);}
+function botMove(board){let best=-Infinity,move=-1;for(const i of [4,0,2,6,8,1,3,5,7]){if(!board[i]){board[i]='O';const s=rank(board,'X');board[i]=null;if(s>best){best=s;move=i;}}}return move;}
+
+var mode="bot",board=Array(9).fill(null),turn="X",done=false,pending=false,revision=0;
+var cells=Array.from(document.querySelectorAll(".gameCell")),status=document.getElementById("gameStatus");
+function paint(){
+ var result=outcome(board);
+ cells.forEach(function(c,i){c.textContent=board[i]||"";c.className="gameCell"+(board[i]?" "+board[i].toLowerCase():"")+(result&&result.line.indexOf(i)!==-1?" win":"");c.setAttribute("aria-label","Cell "+(i+1)+": "+(board[i]||"khali"));c.setAttribute("aria-disabled",String(done||pending||!!board[i]));});
+ if(result){done=true;status.textContent=result.winner==="draw"?"Barabari! Naya game khelo.":mode==="bot"?(result.winner==="X"?"Aap jeet gaye!":"Bot jeet gaya!"):result.winner+" jeet gaya!";}
+ else if(pending){status.textContent="Bot soch raha hai…";}
+ else{status.textContent=mode==="bot"?"Aapki baari (X)":turn+" ki baari";}
+}
+function reset(){revision++;board=Array(9).fill(null);turn="X";done=false;pending=false;paint();}
+function setMode(next){mode=next;document.getElementById("modeBot").setAttribute("aria-pressed",String(mode==="bot"));document.getElementById("modeFriend").setAttribute("aria-pressed",String(mode==="friend"));document.getElementById("gameModeNote").textContent=mode==="bot"?"Aap X hain. Bot O hai.":"Ek hi phone par: X aur O baari-baari khelo.";reset();}
+cells.forEach(function(cell,i){cell.addEventListener("click",function(){
+ if(done||pending||board[i]){return;}
+ board[i]=turn;
+ if(outcome(board)){done=true;paint();return;}
+ if(mode==="friend"){turn=turn==="X"?"O":"X";paint();return;}
+ pending=true;paint();var token=revision;
+ setTimeout(function(){if(token!==revision){return;}var move=botMove(board.slice());if(move>=0){board[move]="O";}pending=false;turn="X";paint();},350);
+});});
+document.getElementById("modeBot").addEventListener("click",function(){setMode("bot");});
+document.getElementById("modeFriend").addEventListener("click",function(){setMode("friend");});
+document.getElementById("gameReset").addEventListener("click",reset);
+paint();
 })();
 </script>
 
