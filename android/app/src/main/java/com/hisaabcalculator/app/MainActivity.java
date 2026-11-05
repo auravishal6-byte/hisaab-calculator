@@ -73,7 +73,12 @@ public class MainActivity extends BridgeActivity {
       );
       // Padding the native parent shrinks the entire WebView viewport, so
       // fixed-position controls, the splash and drawer are all kept safe.
-      view.setPadding(safe.left, safe.top, safe.right, safe.bottom);
+      // The keyboard already occupies the lower screen and its navigation area.
+      // Keeping navigation-bar padding above it leaves a blank window-colored band.
+      // Do not subtract IME height: Android/WebView handles keyboard resizing.
+      boolean keyboardVisible = windowInsets.isVisible(WindowInsetsCompat.Type.ime());
+      int bottomPadding = keyboardVisible ? 0 : safe.bottom;
+      view.setPadding(safe.left, safe.top, safe.right, bottomPadding);
       // We applied these insets once; do not apply them again in descendants.
       return WindowInsetsCompat.CONSUMED;
     });
