@@ -517,9 +517,9 @@ onAuthStateChanged(auth, user => {
  window.hisaabEffect=function(kind){
   if(document.hidden)return;
   try{var c=context();if(!c)return;var t=c.currentTime;
-   if(kind==="X"){tone(c,660,t,0.12,0.13,"sine",880);tone(c,1320,t+0.045,0.13,0.055,"sine");}
-   else if(kind==="O"){tone(c,392,t,0.17,0.15,"sine",294);tone(c,588,t+0.025,0.16,0.065,"sine",440);}
-   else{tone(c,1100,t,0.045,0.055,"sine",760);}
+   if(kind==="X"){tone(c,660,t,0.12,0.52,"sine",880);tone(c,1320,t+0.045,0.13,0.22,"sine");}
+   else if(kind==="O"){tone(c,392,t,0.17,0.60,"sine",294);tone(c,588,t+0.025,0.16,0.26,"sine",440);}
+   else{tone(c,1100,t,0.045,0.22,"sine",760);}
   }catch(e){} // Unsupported/muted audio must never break controls.
  };
  document.addEventListener("click",function(e){
