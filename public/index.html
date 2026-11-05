@@ -23,6 +23,7 @@ input:focus{outline:2px solid #86c99a;border-color:#238344}
 .sub{font-size:13px;color:#45614b;margin-top:3px}
 footer{max-width:650px;margin:18px auto 0;text-align:center;color:#637267;font-size:12px}
 button{border:0;background:#14532d;color:white;border-radius:11px;padding:10px 14px;font:inherit;font-weight:650;margin-top:8px}
+button.lock{background:#7f1d1d}
 </style>
 </head>
 <body><section class="card" id="authBox">
@@ -53,7 +54,16 @@ button{border:0;background:#14532d;color:white;border-radius:11px;padding:10px 1
   <h2>💎 Premium Advanced Calculator</h2>
   <p id="premiumStatus">Premium features locked 🔒</p>
 
-  <div id="advancedTools">
+  <div id="keyBox">
+    <div class="field">
+      <label for="keyInput">Premium Key</label>
+      <input id="keyInput" type="password" placeholder="Apni premium key dalen" autocomplete="off">
+    </div>
+    <button type="button" id="unlockBtn">Unlock Premium</button>
+    <p id="keyMessage" class="sub"></p>
+  </div>
+
+  <div id="advancedTools" hidden>
 
     <h3>1. Discount Calculator</h3>
     <div class="field">
@@ -94,6 +104,10 @@ button{border:0;background:#14532d;color:white;border-radius:11px;padding:10px 1
     </div>
     <button type="button" onclick="calculateGST()">Calculate GST</button>
     <p id="gstResult"></p>
+
+    <hr>
+
+    <button type="button" id="lockBtn" class="lock">Lock Premium 🔒</button>
 
   </div>
 </section>
@@ -209,6 +223,42 @@ function calculateGST() {
 }
 
 </script>
+<script>
+// ===== Premium key lock =====
+// Is file me asli key NAHI hai. Sirf uska SHA-256 hash hai.
+// Key badalni ho to nayi key ka hash yahan daalo (Instinct se poochh sakte ho).
+const PREMIUM_KEY_HASH = "1c0371d1115e2b1f8b3d3e5d6fd5d288c3f18f91ace295ff70d04206c36ebfab";
+const PREMIUM_KEY_SALT = "hisaab-premium-v1:";
+function sha256ascii(ascii){function rr(v,a){return(v>>>a)|(v<<(32-a))}var i,j,hash="";var maxWord=Math.pow(2,32);var words=[];var asciiBitLength=ascii.length*8;var hash=sha256ascii.h=sha256ascii.h||[];var k=sha256ascii.k=sha256ascii.k||[];var primeCounter=k.length;var isComposite={};for(var candidate=2;primeCounter<64;candidate++){if(!isComposite[candidate]){for(i=0;i<313;i+=candidate){isComposite[i]=candidate}hash[primeCounter]=(Math.pow(candidate,0.5)*maxWord)|0;k[primeCounter++]=(Math.pow(candidate,1/3)*maxWord)|0}}ascii+="\x80";while(ascii.length%64-56)ascii+="\x00";for(i=0;i<ascii.length;i++){j=ascii.charCodeAt(i);if(j>>8)return;words[i>>2]|=j<<((3-i)%4)*8}words[words.length]=(asciiBitLength/maxWord)|0;words[words.length]=asciiBitLength;for(j=0;j<words.length;){var w=words.slice(j,j+=16);var oldHash=hash;hash=hash.slice(0,8);for(i=0;i<64;i++){var w15=w[i-15],w2=w[i-2];var a=hash[0],e=hash[4];var temp1=hash[7]+(rr(e,6)^rr(e,11)^rr(e,25))+((e&hash[5])^((~e)&hash[6]))+k[i]+(w[i]=(i<16)?w[i]:(w[i-16]+(rr(w15,7)^rr(w15,18)^(w15>>>3))+w[i-7]+(rr(w2,17)^rr(w2,19)^(w2>>>10)))|0);var temp2=(rr(a,2)^rr(a,13)^rr(a,22))+((a&hash[1])^(a&hash[2])^(hash[1]&hash[2]));hash=[(temp1+temp2)|0].concat(hash);hash[4]=(hash[4]+temp1)|0}for(i=0;i<8;i++){hash[i]=(hash[i]+oldHash[i])|0}}var result="";for(i=0;i<8;i++){for(j=3;j+1;j--){var b=(hash[i]>>(j*8))&255;result+=((b<16)?"0":"")+b.toString(16)}}return result}
+function sha256(str){return sha256ascii(unescape(encodeURIComponent(str)));}
+function premiumSaved(){
+try{return localStorage.getItem("hisaabPremiumUnlocked")==="1";}catch(e){return false;}
+}
+function setPremium(unlocked){
+document.getElementById("advancedTools").hidden = !unlocked;
+document.getElementById("keyBox").hidden = unlocked;
+document.getElementById("premiumStatus").textContent = unlocked ? "Premium unlocked ✅" : "Premium features locked 🔒";
+}
+document.getElementById("unlockBtn").onclick = function(){
+const box = document.getElementById("keyInput");
+const msg = document.getElementById("keyMessage");
+const k = box.value.trim();
+if(k && sha256(PREMIUM_KEY_SALT + k) === PREMIUM_KEY_HASH){
+try{localStorage.setItem("hisaabPremiumUnlocked","1");}catch(e){}
+box.value = "";
+msg.textContent = "";
+setPremium(true);
+}else{
+msg.textContent = "Galat key. Dobara try karo.";
+}
+};
+document.getElementById("lockBtn").onclick = function(){
+try{localStorage.removeItem("hisaabPremiumUnlocked");}catch(e){}
+setPremium(false);
+};
+setPremium(premiumSaved());
+</script>
+
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.14.1/firebase-app.js";
 import {
@@ -287,3 +337,4 @@ onAuthStateChanged(auth, user => {
 
 </body>
 </html>
+
