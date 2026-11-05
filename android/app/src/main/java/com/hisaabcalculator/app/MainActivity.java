@@ -71,10 +71,9 @@ public class MainActivity extends BridgeActivity {
       Insets safe = windowInsets.getInsets(
         WindowInsetsCompat.Type.systemBars() | WindowInsetsCompat.Type.displayCutout()
       );
-      Insets keyboard = windowInsets.getInsets(WindowInsetsCompat.Type.ime());
       // Padding the native parent shrinks the entire WebView viewport, so
       // fixed-position controls, the splash and drawer are all kept safe.
-      view.setPadding(safe.left, safe.top, safe.right, Math.max(safe.bottom, keyboard.bottom));
+      view.setPadding(safe.left, safe.top, safe.right, safe.bottom);
       // We applied these insets once; do not apply them again in descendants.
       return WindowInsetsCompat.CONSUMED;
     });
