@@ -116,6 +116,12 @@ html.dark #splashScreen{background:radial-gradient(ellipse at 50% 38%,#163d27,#0
 @keyframes ringArrival{0%{opacity:0}100%{opacity:1}}
 @keyframes ringSpin{to{transform:rotate(360deg)}}
 @keyframes splashExit{0%{opacity:1;transform:scale(1)}100%{opacity:0;transform:scale(1.035);visibility:hidden}}
+</style><style>
+.socialLinks{margin-top:18px;padding-top:18px;border-top:1px solid #cfe0d3;display:grid;gap:12px}
+.socialLink{display:flex;align-items:center;gap:12px;min-height:56px;padding:12px 14px;border-radius:13px;font-size:15px;font-weight:700;box-shadow:none;margin:0;text-align:left}
+.socialLink svg{width:24px;height:24px;flex:0 0 24px}.socialLink span{flex:1}.socialLink .socialArrow{flex:0;font-size:20px;font-weight:400}
+.socialInstagram{background:#fff4f8;color:#a62962;border:1px solid #ecc8d8}.socialWhatsapp{background:#e9f8ee;color:#176b39;border:1px solid #b9dfc7}
+html.dark .socialLinks{border-color:#2c4b37}html.dark .socialInstagram{background:#30212b;color:#f2b4d1;border-color:#654157}html.dark .socialWhatsapp{background:#153524;color:#a8e4bc;border-color:#386449}
 </style></head>
 <body>
 <div id="splashScreen" aria-label="Hisaab startup">
@@ -134,7 +140,7 @@ html.dark #splashScreen{background:radial-gradient(ellipse at 50% 38%,#163d27,#0
   <audio id="bgmAudio" src="nature.mp3" loop preload="auto"></audio>
 </section>
 <button type="button" id="gameLaunch">Tic Tac Vishal Game <span aria-hidden="true">→</span></button>
-</aside></div>
+<div class="socialLinks" aria-label="Social links"><button type="button" id="socialInstagram" class="socialLink socialInstagram"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r=".9" fill="currentColor" stroke="none"/></svg><span>Follow on Instagram</span><span class="socialArrow" aria-hidden="true">↗</span></button><button type="button" id="socialWhatsapp" class="socialLink socialWhatsapp"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M20 11.6a8.3 8.3 0 0 1-12.2 7.3L3 20.3l1.4-4.6A8.3 8.3 0 1 1 20 11.6Z"/><path d="M8 7.7c.2-.4.5-.4.8-.2l1.2 2c.2.3.1.5-.4 1 .8 1.4 1.6 2.2 3 2.9.5-.6.7-.8 1.1-.5l1.9 1c.4.2.4.6.2.9-.6 1.2-1.4 1.4-2.6 1-2.8-1-5.1-3.2-6-5.9-.3-.8 0-1.6.8-2.2Z"/></svg><span>Message on WhatsApp</span><span class="socialArrow" aria-hidden="true">↗</span></button></div></aside></div>
 
 <div id="menuView">
 <div class="menuHero">
@@ -653,6 +659,13 @@ paint();
 })();
 </script>
 
+<script>
+// Open only the owner-approved profile/chat. No automatic follow or message.
+(function(){
+ document.getElementById("socialInstagram").addEventListener("click",function(){window.location.href="https://www.instagram.com/life_experts_know/";});
+ document.getElementById("socialWhatsapp").addEventListener("click",function(){window.location.href="https://api.whatsapp.com/send?phone=917470485117";});
+})();
+</script>
 </body>
 </html>
 
