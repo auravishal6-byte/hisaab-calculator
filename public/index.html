@@ -198,6 +198,97 @@ html.dark #vsrBack{background:#244731;color:#c5f4d1}
 #vsrOvl .vsrBtns button{width:100%}
 #vsrNew{display:none;margin:0;padding:10px 20px;border-radius:14px;font-size:14px;font-weight:800;background:#ffffff1a;border:1px solid #ffffff55;color:#fff}
 </style>
+
+<style id="CLAYMORPHISM_V1">
+/* Soft clay surfaces - existing app logic untouched */
+:root {
+  --clay-bg:#e9f0e8; --clay-card:#edf4ec; --clay-shadow:#c5d0c3;
+  --clay-light:#fff; --clay-green:#246b3c; --clay-text:#203629;
+}
+#appView {background:var(--clay-bg); min-height:100vh}
+#appView header, #appView .card, #settingsPanel .card {
+  background:linear-gradient(145deg,#f8fff7,#e4ede3);
+  border:1px solid rgba(255,255,255,.9);
+  border-radius:24px;
+  box-shadow:8px 8px 18px #c7d2c5,-7px -7px 18px #fff;
+}
+#appView header {padding:22px; margin-bottom:18px}
+#appView .card {padding:19px}
+#appView h2 {color:var(--clay-green)}
+#appView input:not([type=checkbox]) {
+  border:0; border-radius:15px; background:#e8f0e7;
+  box-shadow:inset 4px 4px 8px #c8d3c6,inset -4px -4px 8px #fff;
+  padding:14px;
+}
+#appView input:focus {
+  outline:2px solid #79b78a; outline-offset:2px;
+}
+#appView button:not(#vsrPause):not(.gameCell) {
+  border-radius:15px; box-shadow:5px 5px 10px #c5d0c3,-4px -4px 10px #fff;
+  transition:transform .16s ease,box-shadow .16s ease;
+}
+#appView button:not(#vsrPause):not(.gameCell):active,
+#menuView .menuBtn:active {
+  transform:translateY(2px);
+  box-shadow:inset 3px 3px 7px #aebbad,inset -3px -3px 7px #fff;
+}
+#appView .result {
+  background:linear-gradient(145deg,#e1f5e4,#d6ebd9);
+  border:1px solid #c6e2ca; border-radius:18px;
+  box-shadow:inset 3px 3px 7px #c4ddc8,inset -3px -3px 7px #f7fff7;
+}
+#menuView .menuHero {
+  border-radius:28px; padding-left:14px; padding-right:14px;
+  background:rgba(255,248,230,.22);
+  border:1px solid rgba(255,255,255,.28);
+  box-shadow:8px 8px 20px rgba(35,25,12,.16),-5px -5px 18px rgba(255,255,255,.12);
+}
+#menuView .menuBtn {
+  border:1px solid rgba(255,255,255,.8);
+  border-radius:22px; color:#203629;
+  box-shadow:8px 8px 16px rgba(35,25,12,.22),-5px -5px 14px rgba(255,255,255,.28);
+  transition:transform .16s ease,box-shadow .16s ease;
+}
+#menuView .menuBtn.m1 {background:linear-gradient(145deg,#d9f5df,#a9dcb5)}
+#menuView .menuBtn.m2 {background:linear-gradient(145deg,#d9f3f7,#a9dce5)}
+#menuView .menuBtn.m3 {background:linear-gradient(145deg,#fff0d1,#f4d19a)}
+#settingsPanel {
+  background:linear-gradient(145deg,#f5fbf3,#e4ede3);
+  box-shadow:10px 0 30px rgba(20,50,25,.2);
+}
+#settingsPanel .settingRow {
+  border:1px solid #fff; border-radius:18px;
+  background:linear-gradient(145deg,#f8fff7,#e5eee4);
+  box-shadow:5px 5px 12px #cbd6c9,-4px -4px 12px #fff;
+}
+html.dark {
+  --clay-bg:#142019; --clay-text:#e4eee7;
+}
+html.dark #appView {background:var(--clay-bg)}
+html.dark #appView header,html.dark #appView .card,
+html.dark #settingsPanel .card,html.dark #settingsPanel .settingRow {
+  background:linear-gradient(145deg,#203529,#17281e);
+  border:1px solid #304a38;
+  box-shadow:7px 7px 15px #0c1710,-5px -5px 14px #263b2d;
+}
+html.dark #appView input:not([type=checkbox]) {
+  background:#17291e; color:#f1f8f3;
+  box-shadow:inset 4px 4px 8px #0c1710,inset -4px -4px 8px #203629;
+}
+html.dark #appView .result {
+  background:linear-gradient(145deg,#1b3b28,#173322);
+  border-color:#345b40;
+  box-shadow:inset 3px 3px 7px #102719,inset -3px -3px 7px #21452e;
+}
+html.dark #settingsPanel {
+  background:linear-gradient(145deg,#1b2d21,#142019);
+}
+html.dark #menuView .menuBtn {color:#183323;border-color:#ffffff55}
+@media (prefers-reduced-motion:reduce) {
+  #appView button,#menuView .menuBtn {transition:none}
+}
+</style>
+
 </head>
 <body>
 <div id="splashScreen" aria-label="Hisaab startup">
